@@ -41,11 +41,11 @@ script:
     - ls -al
     - make html
     - ls -al
-    - make Collatz.log
+    - make Allocator.log
     - ls -al
     - make test
     - ls -al
     - make check
 
 after_failure:
-    - cat TestCollatz.tmp
+    - cat TestAllocator.tmp
