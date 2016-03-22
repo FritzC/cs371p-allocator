@@ -1,0 +1,108 @@
+==300== Memcheck, a memory error detector
+==300== Copyright (C) 2002-2013, and GNU GPL'd, by Julian Seward et al.
+==300== Using Valgrind-3.10.1 and LibVEX; rerun with -h for copyright info
+==300== Command: ./TestAllocator
+==300== 
+Running main() from gtest_main.cc
+[==========] Running 14 tests from 7 test cases.
+[----------] Global test environment set-up.
+[----------] 2 tests from TestAllocator1/0, where TypeParam = std::allocator<int>
+[ RUN      ] TestAllocator1/0.test_1
+[       OK ] TestAllocator1/0.test_1 (9 ms)
+[ RUN      ] TestAllocator1/0.test_10
+[       OK ] TestAllocator1/0.test_10 (4 ms)
+[----------] 2 tests from TestAllocator1/0 (21 ms total)
+
+[----------] 2 tests from TestAllocator1/1, where TypeParam = std::allocator<double>
+[ RUN      ] TestAllocator1/1.test_1
+[       OK ] TestAllocator1/1.test_1 (5 ms)
+[ RUN      ] TestAllocator1/1.test_10
+[       OK ] TestAllocator1/1.test_10 (3 ms)
+[----------] 2 tests from TestAllocator1/1 (8 ms total)
+
+[----------] 2 tests from TestAllocator1/2, where TypeParam = Allocator<int, 100ul>
+[ RUN      ] TestAllocator1/2.test_1
+Construct
+[       OK ] TestAllocator1/2.test_1 (8 ms)
+[ RUN      ] TestAllocator1/2.test_10
+Construct
+[       OK ] TestAllocator1/2.test_10 (3 ms)
+[----------] 2 tests from TestAllocator1/2 (11 ms total)
+
+[----------] 2 tests from TestAllocator1/3, where TypeParam = Allocator<double, 100ul>
+[ RUN      ] TestAllocator1/3.test_1
+Construct
+[       OK ] TestAllocator1/3.test_1 (7 ms)
+[ RUN      ] TestAllocator1/3.test_10
+==300== Conditional jump or move depends on uninitialised value(s)
+==300==    at 0x40F794: TestAllocator1_test_10_Test<Allocator<double, 100ul> >::TestBody() (in /v/filer4b/v38q001/fritzc/CS371/Allocator/cs371p-allocator/TestAllocator)
+==300==    by 0x434EB2: void testing::internal::HandleExceptionsInMethodIfSupported<testing::Test, void>(testing::Test*, void (testing::Test::*)(), char const*) (in /v/filer4b/v38q001/fritzc/CS371/Allocator/cs371p-allocator/TestAllocator)
+==300==    by 0x4279EC: testing::Test::Run() (in /v/filer4b/v38q001/fritzc/CS371/Allocator/cs371p-allocator/TestAllocator)
+==300==    by 0x427A83: testing::TestInfo::Run() (in /v/filer4b/v38q001/fritzc/CS371/Allocator/cs371p-allocator/TestAllocator)
+==300==    by 0x427B84: testing::TestCase::Run() (in /v/filer4b/v38q001/fritzc/CS371/Allocator/cs371p-allocator/TestAllocator)
+==300==    by 0x427DFC: testing::internal::UnitTestImpl::RunAllTests() (in /v/filer4b/v38q001/fritzc/CS371/Allocator/cs371p-allocator/TestAllocator)
+==300==    by 0x4280DD: testing::UnitTest::Run() (in /v/filer4b/v38q001/fritzc/CS371/Allocator/cs371p-allocator/TestAllocator)
+==300==    by 0x40510F: main (in /v/filer4b/v38q001/fritzc/CS371/Allocator/cs371p-allocator/TestAllocator)
+==300== 
+==300== Conditional jump or move depends on uninitialised value(s)
+==300==    at 0x40F82C: TestAllocator1_test_10_Test<Allocator<double, 100ul> >::TestBody() (in /v/filer4b/v38q001/fritzc/CS371/Allocator/cs371p-allocator/TestAllocator)
+==300==    by 0x434EB2: void testing::internal::HandleExceptionsInMethodIfSupported<testing::Test, void>(testing::Test*, void (testing::Test::*)(), char const*) (in /v/filer4b/v38q001/fritzc/CS371/Allocator/cs371p-allocator/TestAllocator)
+==300==    by 0x4279EC: testing::Test::Run() (in /v/filer4b/v38q001/fritzc/CS371/Allocator/cs371p-allocator/TestAllocator)
+==300==    by 0x427A83: testing::TestInfo::Run() (in /v/filer4b/v38q001/fritzc/CS371/Allocator/cs371p-allocator/TestAllocator)
+==300==    by 0x427B84: testing::TestCase::Run() (in /v/filer4b/v38q001/fritzc/CS371/Allocator/cs371p-allocator/TestAllocator)
+==300==    by 0x427DFC: testing::internal::UnitTestImpl::RunAllTests() (in /v/filer4b/v38q001/fritzc/CS371/Allocator/cs371p-allocator/TestAllocator)
+==300==    by 0x4280DD: testing::UnitTest::Run() (in /v/filer4b/v38q001/fritzc/CS371/Allocator/cs371p-allocator/TestAllocator)
+==300==    by 0x40510F: main (in /v/filer4b/v38q001/fritzc/CS371/Allocator/cs371p-allocator/TestAllocator)
+==300== 
+==300== Conditional jump or move depends on uninitialised value(s)
+==300==    at 0x4131C0: Allocator<double, 100ul>::construct(double*, double const&) (in /v/filer4b/v38q001/fritzc/CS371/Allocator/cs371p-allocator/TestAllocator)
+==300==    by 0x40F803: TestAllocator1_test_10_Test<Allocator<double, 100ul> >::TestBody() (in /v/filer4b/v38q001/fritzc/CS371/Allocator/cs371p-allocator/TestAllocator)
+==300==    by 0x434EB2: void testing::internal::HandleExceptionsInMethodIfSupported<testing::Test, void>(testing::Test*, void (testing::Test::*)(), char const*) (in /v/filer4b/v38q001/fritzc/CS371/Allocator/cs371p-allocator/TestAllocator)
+==300==    by 0x4279EC: testing::Test::Run() (in /v/filer4b/v38q001/fritzc/CS371/Allocator/cs371p-allocator/TestAllocator)
+==300==    by 0x427A83: testing::TestInfo::Run() (in /v/filer4b/v38q001/fritzc/CS371/Allocator/cs371p-allocator/TestAllocator)
+==300==    by 0x427B84: testing::TestCase::Run() (in /v/filer4b/v38q001/fritzc/CS371/Allocator/cs371p-allocator/TestAllocator)
+==300==    by 0x427DFC: testing::internal::UnitTestImpl::RunAllTests() (in /v/filer4b/v38q001/fritzc/CS371/Allocator/cs371p-allocator/TestAllocator)
+==300==    by 0x4280DD: testing::UnitTest::Run() (in /v/filer4b/v38q001/fritzc/CS371/Allocator/cs371p-allocator/TestAllocator)
+==300==    by 0x40510F: main (in /v/filer4b/v38q001/fritzc/CS371/Allocator/cs371p-allocator/TestAllocator)
+==300== 
+==300== Use of uninitialised value of size 8
+==300==    at 0x4131C9: Allocator<double, 100ul>::construct(double*, double const&) (in /v/filer4b/v38q001/fritzc/CS371/Allocator/cs371p-allocator/TestAllocator)
+==300==    by 0x40F803: TestAllocator1_test_10_Test<Allocator<double, 100ul> >::TestBody() (in /v/filer4b/v38q001/fritzc/CS371/Allocator/cs371p-allocator/TestAllocator)
+==300==    by 0x434EB2: void testing::internal::HandleExceptionsInMethodIfSupported<testing::Test, void>(testing::Test*, void (testing::Test::*)(), char const*) (in /v/filer4b/v38q001/fritzc/CS371/Allocator/cs371p-allocator/TestAllocator)
+==300==    by 0x4279EC: testing::Test::Run() (in /v/filer4b/v38q001/fritzc/CS371/Allocator/cs371p-allocator/TestAllocator)
+==300==    by 0x427A83: testing::TestInfo::Run() (in /v/filer4b/v38q001/fritzc/CS371/Allocator/cs371p-allocator/TestAllocator)
+==300==    by 0x427B84: testing::TestCase::Run() (in /v/filer4b/v38q001/fritzc/CS371/Allocator/cs371p-allocator/TestAllocator)
+==300==    by 0x427DFC: testing::internal::UnitTestImpl::RunAllTests() (in /v/filer4b/v38q001/fritzc/CS371/Allocator/cs371p-allocator/TestAllocator)
+==300==    by 0x4280DD: testing::UnitTest::Run() (in /v/filer4b/v38q001/fritzc/CS371/Allocator/cs371p-allocator/TestAllocator)
+==300==    by 0x40510F: main (in /v/filer4b/v38q001/fritzc/CS371/Allocator/cs371p-allocator/TestAllocator)
+==300== 
+==300== 
+==300== Process terminating with default action of signal 11 (SIGSEGV)
+==300==  Bad permissions for mapped region at address 0x412E5C
+==300==    at 0x4131C9: Allocator<double, 100ul>::construct(double*, double const&) (in /v/filer4b/v38q001/fritzc/CS371/Allocator/cs371p-allocator/TestAllocator)
+==300==    by 0x40F803: TestAllocator1_test_10_Test<Allocator<double, 100ul> >::TestBody() (in /v/filer4b/v38q001/fritzc/CS371/Allocator/cs371p-allocator/TestAllocator)
+==300==    by 0x434EB2: void testing::internal::HandleExceptionsInMethodIfSupported<testing::Test, void>(testing::Test*, void (testing::Test::*)(), char const*) (in /v/filer4b/v38q001/fritzc/CS371/Allocator/cs371p-allocator/TestAllocator)
+==300==    by 0x4279EC: testing::Test::Run() (in /v/filer4b/v38q001/fritzc/CS371/Allocator/cs371p-allocator/TestAllocator)
+==300==    by 0x427A83: testing::TestInfo::Run() (in /v/filer4b/v38q001/fritzc/CS371/Allocator/cs371p-allocator/TestAllocator)
+==300==    by 0x427B84: testing::TestCase::Run() (in /v/filer4b/v38q001/fritzc/CS371/Allocator/cs371p-allocator/TestAllocator)
+==300==    by 0x427DFC: testing::internal::UnitTestImpl::RunAllTests() (in /v/filer4b/v38q001/fritzc/CS371/Allocator/cs371p-allocator/TestAllocator)
+==300==    by 0x4280DD: testing::UnitTest::Run() (in /v/filer4b/v38q001/fritzc/CS371/Allocator/cs371p-allocator/TestAllocator)
+==300==    by 0x40510F: main (in /v/filer4b/v38q001/fritzc/CS371/Allocator/cs371p-allocator/TestAllocator)
+Construct
+==300== 
+==300== HEAP SUMMARY:
+==300==     in use at exit: 7,731 bytes in 137 blocks
+==300==   total heap usage: 589 allocs, 452 frees, 77,322 bytes allocated
+==300== 
+==300== LEAK SUMMARY:
+==300==    definitely lost: 0 bytes in 0 blocks
+==300==    indirectly lost: 0 bytes in 0 blocks
+==300==      possibly lost: 2,419 bytes in 59 blocks
+==300==    still reachable: 5,312 bytes in 78 blocks
+==300==         suppressed: 0 bytes in 0 blocks
+==300== Rerun with --leak-check=full to see details of leaked memory
+==300== 
+==300== For counts of detected and suppressed errors, rerun with: -v
+==300== Use --track-origins=yes to see where uninitialised values come from
+==300== ERROR SUMMARY: 4 errors from 4 contexts (suppressed: 0 from 0)
+Segmentation fault (core dumped)

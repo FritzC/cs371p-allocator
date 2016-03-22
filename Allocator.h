@@ -15,6 +15,7 @@
 #include <cstddef>   // ptrdiff_t, size_t
 #include <new>       // bad_alloc, new
 #include <stdexcept> // invalid_argument
+#include <stdlib.h> 
 
 // ---------
 // Allocator
@@ -60,6 +61,8 @@ class Allocator {
 
         char a[N];
 
+        const int MIN_BLOCK_SIZE = sizeof(T) + (2 * sizeof(int));
+
         // -----
         // valid
         // -----
@@ -70,8 +73,20 @@ class Allocator {
          * <your documentation>
          */
         bool valid () const {
-            // <your code>
-            
+            for (int i = 0; i < N - 1;) {
+                int sent = (*this)[i];
+                //std::cout << i << "\t" << sent << std::endl;
+                if (i + abs(sent) + 4 < N - 1) {
+                    i += abs(sent) + 4;
+                    int sent2 = (*this)[i];
+                    //std::cout << i << "\t" << sent2 << std::endl;
+                    if (sent2 == sent) {
+                        i += 4;
+                        continue;
+                    }
+                }
+                return false;
+            }
             return true;}
 
         /**
@@ -95,9 +110,10 @@ class Allocator {
          * throw a bad_alloc exception, if N is less than sizeof(T) + (2 * sizeof(int))
          */
         Allocator () {
-            (*this)[0] = 0; // replace!
-            // <your code>
-            assert(valid());}
+            (*this)[0] = N - 8;
+            (*this)[N - 4] = N - 8;
+            assert(valid());
+        }
 
         // Default copy, destructor, and copy assignment
         // Allocator  (const Allocator&);
@@ -117,9 +133,27 @@ class Allocator {
          * throw a bad_alloc exception, if n is invalid
          */
         pointer allocate (size_type n) {
-            // <your code>
+            pointer ptr;
+            if (n <= 0) {
+                throw std::bad_alloc();
+            }
+            n *= sizeof(T);
+            for (int i = 0; i < N; i++) {
+                int sent = (*this)[i];
+                if (sent >= n + 8 + MIN_BLOCK_SIZE || sent == n + 8) {
+                    (*this)[i] = -n;
+                    (*this)[i + n + 4] = -n;
+                    if (sent >= n + 8 + MIN_BLOCK_SIZE) {
+                        (*this)[i + n + 8] = sent - n - 8;
+                        (*this)[i + sent + 4] = sent - n - 8;
+                    }
+                    ptr = reinterpret_cast<T*>(&(*this)[i + 4]);
+                    break;
+                }
+                i += abs(sent) + 8;
+            }
             assert(valid());
-            return nullptr;}             // replace!
+            return ptr;}
 
         // ---------
         // construct
