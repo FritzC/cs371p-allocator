@@ -90,11 +90,29 @@ TYPED_TEST(TestAllocator1, test_10) {
 
 TEST(TestAllocator2, const_index) {
     const Allocator<int, 100> x;
-    ASSERT_EQ(x[0], 92);}
+    ASSERT_EQ(x[0], 92);
+    ASSERT_EQ(x[96], 92);}
 
 TEST(TestAllocator2, index) {
     Allocator<int, 100> x;
-    ASSERT_EQ(x[0], 92);}
+    ASSERT_EQ(x[0], 92);
+    ASSERT_EQ(x[96], 92);
+    x.allocate((size_t)1);
+    x.allocate((size_t)1);
+    x.allocate((size_t)2);
+    x.allocate((size_t)3);
+    x.allocate((size_t)8);
+    ASSERT_EQ(x[0], -4);
+    ASSERT_EQ(x[8], -4);
+    ASSERT_EQ(x[12], -4);
+    ASSERT_EQ(x[20], -4);
+    ASSERT_EQ(x[24], -8);
+    ASSERT_EQ(x[36], -8);
+    ASSERT_EQ(x[40], -12);
+    ASSERT_EQ(x[56], -12);
+    ASSERT_EQ(x[60], -32);
+    ASSERT_EQ(x[96], -32);
+}
 
 // --------------
 // TestAllocator3

@@ -60,6 +60,8 @@ class Allocator {
         // ----
 
         char a[N];
+        const int debug = 0; 
+        const int sent_size = 2 * sizeof(int);
 
         // -----
         // valid
@@ -68,17 +70,17 @@ class Allocator {
         /**
          * O(1) in space
          * O(n) in time
-         * <your documentation>
+         * Ensures that the allocator only contains valid blocks 
          */
         bool valid () const {
             int i = 0;
-            while (i < N-4) {
+            while (i < N-sent_size/2) {             
                 int sent = (*this)[i];
-                //std::cout << i << "\t" << sent << std::endl;
-                i += abs(sent) + 4;
-                //std::cout << i << "\t" << (*this)[i] << std::endl;
-                if (i > N-4 || (*this)[i] != sent) return false;
-                i += 4;
+                if(debug) std::cout << i << "\t" << sent << std::endl;                  //prints value of array index and sentinel value
+                i += abs(sent) + sent_size/2;                                           //finds index of matching sentinel from the value at first sentinel
+                if(debug) std::cout << i << "\t" << (*this)[i] << std::endl;            //prints value of array index and sentinel value
+                if (i > N-sent_size/2 || (*this)[i] != sent) return false;              //checks if index is out of bounds or values mismatch 
+                i += sent_size/2;                                                          
             }
             return true;
         }
@@ -86,7 +88,6 @@ class Allocator {
         /**
          * O(1) in space
          * O(1) in time
-         * <your documentation>
          * https://code.google.com/p/googletest/wiki/AdvancedGuide#Private_Class_Members
          */
         FRIEND_TEST(TestAllocator2, index);
@@ -102,10 +103,15 @@ class Allocator {
          * O(1) in space
          * O(1) in time
          * throw a bad_alloc exception, if N is less than sizeof(T) + (2 * sizeof(int))
+         * Sets values at the first and last value of the array as sentinels with values  
+         * representing the amount of free space between them 
          */
         Allocator () {
-            (*this)[0] = N - 8;
-            (*this)[N - 4] = N - 8;
+            if (N < sizeof(T) + sent_size) {
+                throw std::bad_alloc();
+            }
+            (*this)[0] = N - sent_size;
+            (*this)[N - sent_size/2] = N - sent_size;
             assert(valid());
         }
 
@@ -128,30 +134,34 @@ class Allocator {
          */
         pointer allocate (size_type n) {
             pointer ptr;
-            if (n <= 0) {
-                throw std::bad_alloc();
-            }
-            n *= sizeof(T);
+            if (n <= 0) throw std::bad_alloc();
+            int sv = n * sizeof(T); 
             int i = 0;
             bool found = false;
-            while (i < N-4 || !found) {
+            while (i < N-sent_size/2 && !found) {
                 int sent = (*this)[i];
-                if (sent > n + 8 && (sent - n + 8) < (sizeof(T) + 8)) n = sent - 8;
-                if (sent == n + 8){
+                // checks if there is enough space for a valid block after allocation
+                if ((sent > sv) && ((sent - sv) < (sizeof(T) + sent_size))) sv = sent;
+                // if the block available is exactly the size needed, simply flip sentinels
+                if (sent == sv){
                     (*this)[i] *= -1;
-                    (*this)[i + sent + 4] *= -1;
+                    (*this)[i + sent + sent_size/2] *= -1;
+                    ptr = reinterpret_cast<T*>(&(*this)[i + sent_size/2]);
                     found = true;
                 }
-                else if (sent > n + 8) { 
-                    (*this)[i] = -n;
-                    (*this)[i + n + 4] = -n;
-                    (*this)[i + n + 8] = sent - n - 8;
-                    (*this)[i + sent + 4] = sent - n - 8;
-                    ptr = reinterpret_cast<T*>(&(*this)[i + 4]);
+                // if there is enough room after allocation for a valid block, create a new block
+                else if (sent > sv) { 
+                    (*this)[i] = -sv;
+                    (*this)[i + sv + sent_size/2] = -sv;
+                    (*this)[i + sv + sent_size] = sent - sv - sent_size;
+                    (*this)[i + sent + sent_size/2] = sent - sv - sent_size;
+                    ptr = reinterpret_cast<T*>(&(*this)[i + sent_size/2]);
                     found = true;
                 }
-                i += abs(sent) + 8;
+                //finds index of next block 
+                i += abs(sent) + sent_size;
             }
+            if(!found) throw std::bad_alloc();
             assert(valid());
             return ptr;
         }
@@ -177,11 +187,38 @@ class Allocator {
          * O(1) in time
          * after deallocation adjacent free blocks must be coalesced
          * throw an invalid_argument exception, if p is invalid
-         * <your documentation>
+         * frees previously allocated memory  
          */
         void deallocate (pointer p, size_type) {
-            (*this)[0] = N - 8;
-            (*this)[N - 4] = N - 8;
+            // [-4]p..[-4][80]...[80]
+            // [80]...[80][-4]p..[-4]
+            //MAKE SURE YOU DONT CHECK OUT OF BOUNDS
+            //MAKE SURE DOUBLE COALESCE IS CORRECT
+            int* curr = reinterpret_cast<int*>(p);
+            --curr;
+            *curr *= -1;
+            int* next = curr + 2 + *curr/sizeof(int);  
+            int* last = curr - 1;
+            int nv = *next/sizeof(int);
+            int lv = *last/sizeof(int);
+            *(next-1) = *curr;
+
+            //checks if block to the left must be coalesced
+            if(curr != &(*this)[0]){
+                if(*last > 0){
+                    *(last - 1 - lv) = (*last + sent_size + *curr);
+                    *(next-1) = (*last + sent_size + *curr);
+                    curr = last;
+                }
+            }
+            //checks if block to the right must be coalesced
+            if((next-1) != &(*this)[N-sent_size/2]){
+                if(*next > 0){
+                    *curr = (sent_size + *curr + *next);
+                    *(next + nv + 1) = *curr;
+                }
+
+            }
             assert(valid());}
 
         // -------
