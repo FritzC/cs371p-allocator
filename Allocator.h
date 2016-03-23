@@ -71,21 +71,17 @@ class Allocator {
          * <your documentation>
          */
         bool valid () const {
-            for (int i = 0; i < N - 1;) {
+            int i = 0;
+            while (i < N-4) {
                 int sent = (*this)[i];
                 //std::cout << i << "\t" << sent << std::endl;
-                if (i + abs(sent) + 4 < N - 1) {
-                    i += abs(sent) + 4;
-                    int sent2 = (*this)[i];
-                    //std::cout << i << "\t" << sent2 << std::endl;
-                    if (sent2 == sent) {
-                        i += 4;
-                        continue;
-                    }
-                }
-                return false;
+                i += abs(sent) + 4;
+                //std::cout << i << "\t" << (*this)[i] << std::endl;
+                if (i > N-4 || (*this)[i] != sent) return false;
+                i += 4;
             }
-            return true;}
+            return true;
+        }
 
         /**
          * O(1) in space
@@ -136,12 +132,15 @@ class Allocator {
                 throw std::bad_alloc();
             }
             n *= sizeof(T);
-            for (int i = 0; i < N; i++) {
+            int i = 0;
+            bool found = false;
+            while (i < N-4 || !found) {
                 int sent = (*this)[i];
                 if (sent > n + 8 && (sent - n + 8) < (sizeof(T) + 8)) n = sent - 8;
                 if (sent == n + 8){
                     (*this)[i] *= -1;
                     (*this)[i + sent + 4] *= -1;
+                    found = true;
                 }
                 else if (sent > n + 8) { 
                     (*this)[i] = -n;
@@ -149,12 +148,13 @@ class Allocator {
                     (*this)[i + n + 8] = sent - n - 8;
                     (*this)[i + sent + 4] = sent - n - 8;
                     ptr = reinterpret_cast<T*>(&(*this)[i + 4]);
-                    break;
+                    found = true;
                 }
                 i += abs(sent) + 8;
             }
             assert(valid());
-            return ptr;}
+            return ptr;
+        }
 
         // ---------
         // construct
