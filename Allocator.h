@@ -61,8 +61,6 @@ class Allocator {
 
         char a[N];
 
-        const int MIN_BLOCK_SIZE = sizeof(T) + (2 * sizeof(int));
-
         // -----
         // valid
         // -----
@@ -140,13 +138,16 @@ class Allocator {
             n *= sizeof(T);
             for (int i = 0; i < N; i++) {
                 int sent = (*this)[i];
-                if (sent >= n + 8 + MIN_BLOCK_SIZE || sent == n + 8) {
+                if (sent > n + 8 && (sent - n + 8) < (sizeof(T) + 8)) n = sent - 8;
+                if (sent == n + 8){
+                    (*this)[i] *= -1;
+                    (*this)[i + sent + 4] *= -1;
+                }
+                else if (sent > n + 8) { 
                     (*this)[i] = -n;
                     (*this)[i + n + 4] = -n;
-                    if (sent >= n + 8 + MIN_BLOCK_SIZE) {
-                        (*this)[i + n + 8] = sent - n - 8;
-                        (*this)[i + sent + 4] = sent - n - 8;
-                    }
+                    (*this)[i + n + 8] = sent - n - 8;
+                    (*this)[i + sent + 4] = sent - n - 8;
                     ptr = reinterpret_cast<T*>(&(*this)[i + 4]);
                     break;
                 }
@@ -179,7 +180,8 @@ class Allocator {
          * <your documentation>
          */
         void deallocate (pointer p, size_type) {
-            // <your code>
+            (*this)[0] = N - 8;
+            (*this)[N - 4] = N - 8;
             assert(valid());}
 
         // -------
