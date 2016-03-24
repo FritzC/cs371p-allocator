@@ -76,6 +76,7 @@ class Allocator {
             int i = 0;
             while (i < N-sent_size/2) {             
                 int sent = (*this)[i];
+                if(!sent) return false;
                 if(debug) std::cout << i << "\t" << sent << std::endl;                  //prints value of array index and sentinel value
                 i += abs(sent) + sent_size/2;                                           //finds index of matching sentinel from the value at first sentinel
                 if(debug) std::cout << i << "\t" << (*this)[i] << std::endl;            //prints value of array index and sentinel value
@@ -91,6 +92,19 @@ class Allocator {
          * https://code.google.com/p/googletest/wiki/AdvancedGuide#Private_Class_Members
          */
         FRIEND_TEST(TestAllocator2, index);
+        FRIEND_TEST(TestAllocator4, index);
+        FRIEND_TEST(TestAllocator5, index);
+        FRIEND_TEST(TestAllocator6, index);
+        FRIEND_TEST(TestAllocator7, index);
+        FRIEND_TEST(TestAllocator8, index);
+        FRIEND_TEST(TestAllocator9, index);
+        FRIEND_TEST(TestAllocator10, index);
+        FRIEND_TEST(TestAllocator11, index);
+        FRIEND_TEST(TestAllocator12, index);
+        FRIEND_TEST(TestAllocator13, index);
+        FRIEND_TEST(TestAllocator14, index);
+        FRIEND_TEST(TestAllocator15, index);
+
         int& operator [] (int i) {
             return *reinterpret_cast<int*>(&a[i]);}
 
@@ -190,11 +204,10 @@ class Allocator {
          * frees previously allocated memory  
          */
         void deallocate (pointer p, size_type) {
-            // [-4]p..[-4][80]...[80]
-            // [80]...[80][-4]p..[-4]
-            //MAKE SURE YOU DONT CHECK OUT OF BOUNDS
-            //MAKE SURE DOUBLE COALESCE IS CORRECT
             int* curr = reinterpret_cast<int*>(p);
+            if(curr <= &(*this)[0] || curr >= &(*this)[N-sent_size/2] ){
+                throw std::invalid_argument("pointer p invalid");
+            }
             --curr;
             *curr *= -1;
             int* next = curr + 2 + *curr/sizeof(int);  
@@ -208,7 +221,7 @@ class Allocator {
                 if(*last > 0){
                     *(last - 1 - lv) = (*last + sent_size + *curr);
                     *(next-1) = (*last + sent_size + *curr);
-                    curr = last;
+                    curr = last - 1 - lv;
                 }
             }
             //checks if block to the right must be coalesced
