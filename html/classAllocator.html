@@ -162,7 +162,7 @@ template&lt;typename T , std::size_t N&gt; </div>
   </tr>
 </table>
 </div><div class="memdoc">
-<p>O(1) in space O(1) in time throw a bad_alloc exception, if N is less than sizeof(T) + (2 * sizeof(int)) </p>
+<p>O(1) in space O(1) in time throw a bad_alloc exception, if N is less than sizeof(T) + (2 * sizeof(int)) Sets values at the first and last value of the array as sentinels with values representing the amount of free space between them </p>
 
 </div>
 </div>
@@ -264,7 +264,7 @@ template&lt;typename T , std::size_t N&gt; </div>
   </tr>
 </table>
 </div><div class="memdoc">
-<p>O(1) in space O(1) in time after deallocation adjacent free blocks must be coalesced throw an invalid_argument exception, if p is invalid &lt;your documentation&gt;=""&gt; </p>
+<p>O(1) in space O(1) in time after deallocation adjacent free blocks must be coalesced throw an invalid_argument exception, if p is invalid frees previously allocated memory </p>
 
 </div>
 </div>
@@ -328,7 +328,7 @@ template&lt;typename T , std::size_t N&gt; </div>
 </div><!-- contents -->
 <!-- start footer part -->
 <hr class="footer"/><address class="footer"><small>
-Generated on Mon Mar 21 2016 18:34:49 for My Project by &#160;<a href="http://www.doxygen.org/index.html">
+Generated on Wed Mar 23 2016 19:23:12 for My Project by &#160;<a href="http://www.doxygen.org/index.html">
 <img class="footer" src="doxygen.png" alt="doxygen"/>
 </a> 1.8.6
 </small></address>

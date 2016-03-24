@@ -1,0 +1,53 @@
+commit 2c5bb3f4941ca8ccbc7330635fd2d342cd45661e
+Author: jtd2226 <joeldavi@utexas.edu>
+Date:   Wed Mar 23 19:13:04 2016 -0500
+
+    wrote and passed tests
+
+commit e020c99249bb227caacae1da85d9e7d6f9fd243c
+Author: jtd2226 <joeldavi@utexas.edu>
+Date:   Wed Mar 23 17:47:04 2016 -0500
+
+    deallocate and initial tests working
+
+commit 732705a5796048708bfe87f0f6186547aaf77790
+Author: jtd2226 <joeldavi@utexas.edu>
+Date:   Tue Mar 22 22:37:03 2016 -0500
+
+    fixed bug with for loop
+
+commit 466bc96867e902770f0e3eba0755d52f95cd9c9d
+Author: jtd2226 <joeldavi@utexas.edu>
+Date:   Tue Mar 22 22:14:31 2016 -0500
+
+    added corner case to allocate() so that all tests pass
+
+commit 9621e317cacf8e33085c5737c15436c4ee65b1b7
+Author: Frederick Copes <fritzc@cs.utexas.edu>
+Date:   Mon Mar 21 20:04:48 2016 -0500
+
+    Constructor, valid, and allocate completed
+
+commit 72bd535a8434d63c7744e394650fcba3c321e32f
+Author: Frederick Copes <fritzc@cs.utexas.edu>
+Date:   Mon Mar 21 18:17:40 2016 -0500
+
+    dev
+
+commit 23b504359fa3085d2b1b404fb7a6e5edaf7da3d5
+Author: Glenn Downing <downing@cs.utexas.edu>
+Date:   Sun Mar 6 10:06:37 2016 -0600
+
+    another commit
+
+commit 10a1338e3151075d5f55da473c60e6ecdf0f43df
+Author: Glenn Downing <downing@cs.utexas.edu>
+Date:   Sun Mar 6 10:03:16 2016 -0600
+
+    another commit
+
+commit 630a6e374e22997e8d4800015714cd95e5d8bce9
+Author: Glenn Downing <downing@cs.utexas.edu>
+Date:   Sun Mar 6 10:01:38 2016 -0600
+
+    first commit

@@ -59,7 +59,7 @@ const int \& \hyperlink{classAllocator_a107cf1e09d9119f2819c0b5f6cdbe20b}{operat
 {}
 \end{DoxyParamCaption}
 )\hspace{0.3cm}{\ttfamily [inline]}}}\label{classAllocator_a4e2bf5fbf94e2206bb72b71ad4b7ffb3}
-O(1) in space O(1) in time throw a bad\-\_\-alloc exception, if N is less than sizeof(\-T) + (2 $\ast$ sizeof(int)) 
+O(1) in space O(1) in time throw a bad\-\_\-alloc exception, if N is less than sizeof(\-T) + (2 $\ast$ sizeof(int)) Sets values at the first and last value of the array as sentinels with values representing the amount of free space between them 
 
 \subsection{Member Function Documentation}
 \hypertarget{classAllocator_a8a19b7b675f5434c28c68fb15de86f36}{\index{Allocator@{Allocator}!allocate@{allocate}}
@@ -85,7 +85,7 @@ O(1) in space O(1) in time \hypertarget{classAllocator_a8823b257191f53d7f1efac93
 \item[{size\-\_\-type}]{}
 \end{DoxyParamCaption}
 )\hspace{0.3cm}{\ttfamily [inline]}}}\label{classAllocator_a8823b257191f53d7f1efac9332d8f61a}
-O(1) in space O(1) in time after deallocation adjacent free blocks must be coalesced throw an invalid\-\_\-argument exception, if p is invalid $<$your documentation$>$=\char`\"{}\char`\"{}$>$ \hypertarget{classAllocator_af156a6a50a8c62c70e40cf342a3b64cb}{\index{Allocator@{Allocator}!destroy@{destroy}}
+O(1) in space O(1) in time after deallocation adjacent free blocks must be coalesced throw an invalid\-\_\-argument exception, if p is invalid frees previously allocated memory \hypertarget{classAllocator_af156a6a50a8c62c70e40cf342a3b64cb}{\index{Allocator@{Allocator}!destroy@{destroy}}
 \index{destroy@{destroy}!Allocator@{Allocator}}
 \subsubsection[{destroy}]{\setlength{\rightskip}{0pt plus 5cm}template$<$typename T , std\-::size\-\_\-t N$>$ void {\bf Allocator}$<$ T, N $>$\-::destroy (
 \begin{DoxyParamCaption}
